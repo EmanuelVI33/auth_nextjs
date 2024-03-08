@@ -71,7 +71,7 @@ function RegisterPage() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Correo</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="correo@mail.com" {...field} />
               </FormControl>
