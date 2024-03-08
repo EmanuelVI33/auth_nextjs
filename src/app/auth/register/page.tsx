@@ -17,27 +17,29 @@ import {
 
 const formSchema = z
   .object({
+    name: z.string(),
     email: z.string().email({ message: "Correo inválido" }),
     password: z.string().min(6),
-    passwordConfirmed: z.string(),
+    password_confirmation: z.string(),
   })
   .refine(
     (data) => {
-      return data.password === data.passwordConfirmed;
+      return data.password === data.password_confirmation;
     },
     {
       message: "Las contraseñas no coinciden",
-      path: ["passwordConfirmed"],
+      path: ["password_confirmation"],
     }
   );
 
-function LoginPage() {
+function RegisterPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
-      passwordConfirmed: "",
+      password_confirmation: "",
     },
   });
 
@@ -51,6 +53,19 @@ function LoginPage() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 max-w-md w-full p-5 bg-slate-300 mx-auto rounded-2xl"
       >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nombre</FormLabel>
+              <FormControl>
+                <Input placeholder="nombre" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -79,7 +94,7 @@ function LoginPage() {
         />
         <FormField
           control={form.control}
-          name="passwordConfirmed"
+          name="password_confirmation"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Confirmar contraseña</FormLabel>
@@ -101,4 +116,4 @@ function LoginPage() {
     </Form>
   );
 }
-export default LoginPage;
+export default RegisterPage;
